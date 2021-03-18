@@ -1,0 +1,21 @@
+<html>
+    <head>
+        <title>All Countries Details</title>
+    </head>
+    <body>
+        <input type="hidden" id="mainData" value="{{countryData}}">
+        <center>
+            <h1>All Countries Details</h1><br>
+            <div id="countryName"><p>Loading</p></div>
+        </center>
+
+        <script type="text/javascript">
+            const countryData = JSON.parse(document.getElementById("mainData").value.toString());
+            let html = new String();
+            for (const index in countryData){
+                html += `<p>${parseInt(index)+1} ${countryData[index].name}</p>`;
+            }
+            document.getElementById("countryName").innerHTML = html;
+        </script>
+    </body>
+</html>
