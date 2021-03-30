@@ -13,7 +13,8 @@ class Generate:
         optionsL:list = list()
         answersL:list = list()
         for question in questions:
-            questionsL.append(question.text.replace("\xa0", "").replace("\n",""))
+            print (question.text.replace("\xa0", "").replace("\n","").split(".")[1])
+            questionsL.append(question.text.replace("\xa0", "").replace("\n","").split(".")[1])
         options:list = soup.findAll("p", attrs = {'class':'options'})
         for option in options:
             optionsL.append([i[3:] for i in option.text.split("\n") if i])

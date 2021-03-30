@@ -15,7 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from restapp.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', indexView),
+    path('all-data',allData),
+    path('put/',putData),
+    path('all-regions/', allRegions),
+    path('all-sub-regions/', allSubRegions),
+    path('country-per/', countryPer)
 ]

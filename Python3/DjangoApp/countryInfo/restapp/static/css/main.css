@@ -1,0 +1,39 @@
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #dddddd;
+  }
+
+#heading{
+  text-align: center;
+  color: green;
+}
+#filterBy{
+  margin-bottom: 30px;
+  margin-right: 30px;
+  font-size: large;
+  height: 40px;
+  width: 500px;
+}
+#filterValue{
+  font-size: large;
+  height: 40px;
+  width: 500px;
+}
+#clickMe{
+  color: red;
+  background-color: blue;;
+  border-radius: 2 px solid red;
+  padding: 5px;
+  margin-left: 30px;
+}
