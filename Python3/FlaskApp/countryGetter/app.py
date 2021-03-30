@@ -6,12 +6,13 @@ from models import *
 
 app:Flask = Flask(__name__)
 
-app.config['SECRET_KEY'] = "this-is-most-secret-key-of-theuniverse"
+app.config['SECRET_KEY'] = "this-is-most-secret-key-of-the-universe"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///country.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 admin = Admin(app, name="Flask country app")
 admin.add_view(ModelView(Country, db.session))
+admin.add_view(ModelView(Continent, db.session))
 
 def create_db() -> bool:
     with app.app_context():
@@ -26,6 +27,7 @@ def create_db() -> bool:
 @app.route("/")
 def index() -> render_template: 
     countryData = get("https://restcountries.eu/rest/v2/all").json()
+    print (len(countryData))
     for country in countryData:
         newCountry = Country(name=country["name"], flag=country["flag"], population=country["population"],
                             capital=country["capital"], continent=country["region"], area=country["area"])
@@ -36,7 +38,8 @@ def index() -> render_template:
 
 @app.route("/getall")
 def getAll():
-    allCountry = Country.query.all()
+    allCountry = Country.query.filter_by(continent="Asia").all()
+    print(len(allCountry))
     allCountryL:list = list()
     for country in allCountry: 
         _dict:dict = country.__dict__
