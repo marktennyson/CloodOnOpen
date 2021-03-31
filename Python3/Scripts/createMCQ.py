@@ -1,5 +1,5 @@
 from xlsxwriter import Workbook
-from random import choice
+from random import choice, randint
 from requests import get
 from bs4 import BeautifulSoup 
 
@@ -13,8 +13,7 @@ class Generate:
         optionsL:list = list()
         answersL:list = list()
         for question in questions:
-            print (question.text.replace("\xa0", "").replace("\n","").split(".")[1])
-            questionsL.append(question.text.replace("\xa0", "").replace("\n","").split(".")[1])
+            questionsL.append(question.text.replace("\xa0", "").replace("\n",""))
         options:list = soup.findAll("p", attrs = {'class':'options'})
         for option in options:
             optionsL.append([i[3:] for i in option.text.split("\n") if i])
@@ -27,7 +26,12 @@ class Generate:
             _list:list = [questionsL[i], optionsL[i][0], optionsL[i][1], optionsL[i][2], optionsL[i][3]]
             _list = ["*"+j if j==optionsL[i][answersL[i]] else j for j in _list]
             _list.append(choice(['Easy', 'Moderate', 'Difficult']))
-            _list.append("1")
+            _list.append(str(randint(1,5)))
+            _list.append("")
+            _list.append("")
+            _list.append("")
+            _list.append("")
+            _list.append("")
             res.append(_list)    
         return res
 
@@ -46,7 +50,7 @@ class Write:
 
 def main() -> None:
     websites:list = ["https://letsfindcourse.com/cloud-computing/aws-mcq-questions-and-answers", "https://letsfindcourse.com/cloud-computing/amazon-web-services-mcq-questions-and-answers"]
-    dataL:list = [["question", "option", "option", "option", "option", "difficulty", "score"]]
+    dataL:list = [["question", "option", "option", "option", "option", "difficulty", "score","label", "label", "hint", "correct_answer_feedback", "incorrect_answer_feedback"],]
     for website in websites:
         dataL += Generate.data(website)
     print(Write.toXLSX(dataL))

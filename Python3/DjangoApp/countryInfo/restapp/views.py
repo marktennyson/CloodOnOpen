@@ -57,7 +57,8 @@ def countryPer(request):
     region = request.GET.get('region', '')
     subRegion = request.GET.get('subregion', '')
     neighbours = request.GET.get('neighbours', '')
-    if not region and not subRegion and not neighbours: return HttpResponse(dumps({'message' : 'please provide region or subregion name'}))
+    population = request.GET.get('population', '')
+    if not region and not subRegion and not neighbours and not population: return HttpResponse(dumps({'message' : 'please provide a valid query param.'}))
     if region: 
         try: regionObj = Region.objects.get(name=region)
         except: return HttpResponse(dumps({'message':"please enter a valid region name"}))
@@ -68,11 +69,22 @@ def countryPer(request):
         allCountry = CountryInfo.objects.filter(subRegion=subRegionObj)
     elif neighbours:
         countryObj = CountryInfo.objects.get(name=neighbours)
-        neighbourCountryCodes = countryObj.neighbours.split("_")
-        print (neighbourCountryCodes)
-        if len(neighbourCountryCodes) == 1 and not len(neighbourCountryCodes[0]): return HttpResponse(dumps([{"message":False}]))
+        try: neighbourCountryCodes = countryObj.neighbours.split("_")
+        except: return HttpResponse(dumps([]))
         allCountry = list()
         for i in neighbourCountryCodes:
             allCountry.append(CountryInfo.objects.get(code=i))
+    elif population:
+        M = 1000000
+        B = 1000000000
+        if population == 'bel1m': allCountry = CountryInfo.objects.filter(population__lte=M)
+        elif population == '1to10m': allCountry = CountryInfo.objects.filter(population__gte=M, population__lte=10*M)
+        elif population == '10to30m': allCountry = CountryInfo.objects.filter(population__gte=10*M, population__lte=30*M)
+        elif population == '30to100m': allCountry = CountryInfo.objects.filter(population__gte=30*M, population__lte=100*M)
+        elif population == '100to300m': allCountry = CountryInfo.objects.filter(population__gte=100*M, population__lte=300*M)
+        elif population == '300to500m': allCountry = CountryInfo.objects.filter(population__gte=300*M, population__lte=500*M)
+        elif population == '500to700m': allCountry = CountryInfo.objects.filter(population__gte=500*M, population__lte=700*M)
+        elif population == '700to1b': allCountry = CountryInfo.objects.filter(population__gte=700*M, population__lte=B)
+        elif population == 'gth1b': allCountry = CountryInfo.objects.filter(population__gte=B)
     allCountryL = [country.toDict() for country in allCountry]
-    return HttpResponse(dumps(allCountryL)) 
+    return HttpResponse(dumps(allCountryL))     

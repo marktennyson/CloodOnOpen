@@ -1,6 +1,7 @@
 <html>
 <head>
     {% load static %}
+    <link rel='shortcut icon' type='image/x-icon' href="https://s3.amazonaws.com/demo.cloodon.com/favicon.ico" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 </head>
 <body>
@@ -14,10 +15,14 @@
         <option value="neighbours">Neighbors</option>
     </select>
     <label for="filter_value">Filter Value: </label>
-    <span id="aniket">
     <select id="filterValue" name="filter_value"></select>
-    </span>
-    {# <button id="clickMe" type="submit" >ClickMe</button> #}
+    <label for="sort_by">Sort By: </label>
+    <select id="sortBy" name="sort_by">
+        <option value="null">--select a value--</option>
+        <option value="name">Name</option>
+        <option value="population">Population</option>
+    </select>
+    <input type="hidden" id="allTableData" value=""></input>
     <table >
         <thead>
             <tr>
@@ -48,115 +53,6 @@
             {% endfor %}
         </tbody>
     </table>
-
-    <script type="text/javascript">
-        document.getElementById("filterBy").oninput = function(e){
-            if ( e.target.value === "region"){
-                var html = new String();
-                fetch("/all-regions").then(res=>res.json()).then(regions => {
-                    regions.forEach(region => {
-                        html += `<option value="${region.name}">${region.name}</option>`
-                    })
-                    document.getElementById("filterValue").innerHTML = html;
-                })
-            }else if ( e.target.value === "subRegion"){
-                var html = new String();
-                fetch("/all-sub-regions").then(res=>res.json()).then(subRegions => {
-                    subRegions.forEach(subRegion => {
-                        html += `<option value="${subRegion.name}">${subRegion.name}</option>`
-                    })
-                    document.getElementById("filterValue").innerHTML = html;
-                })
-            }else if ( e.target.value === "population"){
-                var html = `<option value="bel1m">Below 1 Million</option>
-                            <option value="1to10m">1 - 10 Million</option>
-                            <option value="10to30m">10 - 30 Million</option>
-                            <option value="30to100m">30 - 100 Million</option>
-                            <option value="100to300m">100 - 300 Million</option>
-                            <option value="300to500m">300 - 500 Million</option>
-                            <option value="500to700m">500 - 700 Million</option>
-                            <option value="700to1b">700 - 1 Billion</option>
-                            <option value="gth1b">Greater Than 1 Billion</option>`;
-                document.getElementById("filterValue").innerHTML = html;
-
-                //fetch("/all-sub-regions").then(res=>res.json()).then(subRegions => {
-                //    subRegions.forEach(subRegion => {
-                //        html += `<option value="${subRegion}">${subRegion}</option>`
-                //    })
-                //    html = html+`</select>`
-                //    //console.log(html);
-                //    document.getElementById("aniket").innerHTML = html;
-                //})
-            }else if ( e.target.value === "neighbours"){
-                var html = new String();
-                fetch("/all-data").then(res=>res.json()).then(allCountries => {
-                    allCountries.forEach(country => {
-                        html += `<option value="${country.name}">${country.name}</option>`
-                    })
-                    document.getElementById("filterValue").innerHTML = html;
-                })
-            }
-        }
-
-        document.getElementById("filterValue").oninput = function(e) {
-            var filterBy = document.getElementById("filterBy").value;
-            if (filterBy === 'region'){
-                fetch(`/country-per?region=${e.target.value}`).then(res=>res.json()).then(countries => {
-                    let html = new String();
-                    countries.forEach((country, count) => {
-                        html += `<tr>
-                            <th>${count+1}</th>
-                            <th>${country.name}</th>
-                            <th>${country.capital}</th>
-                            <th>${country.region}</th>
-                            <th>${country.subRegion}</th>
-                            <th>${country.population}</th>
-                            <th>${country.languages}</th>
-                            <th>${country.currency}</th>
-                            <th>${country.code}</th>
-                        </tr>`
-                    })
-                    document.getElementById("tableContent").innerHTML = html;
-                })
-            }else if (filterBy === 'subRegion'){
-                fetch(`/country-per?subregion=${e.target.value}`).then(res=>res.json()).then(countries => {
-                    let html = new String();
-                    countries.forEach((country, count) => {
-                        html += `<tr>
-                            <th>${count+1}</th>
-                            <th>${country.name}</th>
-                            <th>${country.capital}</th>
-                            <th>${country.region}</th>
-                            <th>${country.subRegion}</th>
-                            <th>${country.population}</th>
-                            <th>${country.languages}</th>
-                            <th>${country.currency}</th>
-                            <th>${country.code}</th>
-                        </tr>`
-                    })
-                    document.getElementById("tableContent").innerHTML = html;
-                })
-            }else if (filterBy === 'neighbours'){
-                fetch(`/country-per?neighbours=${e.target.value}`).then(res=>res.json()).then(countries => {
-                    let html = new String();
-                    console.log(countries)
-                    countries.forEach((country, count) => {
-                        html += `<tr>
-                            <th>${count+1}</th>
-                            <th>${country.name}</th>
-                            <th>${country.capital}</th>
-                            <th>${country.region}</th>
-                            <th>${country.subRegion}</th>
-                            <th>${country.population}</th>
-                            <th>${country.languages}</th>
-                            <th>${country.currency}</th>
-                            <th>${country.code}</th>
-                        </tr>`
-                    })
-                    document.getElementById("tableContent").innerHTML = html;
-                })
-            }
-        }
-    </script>
+    <script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
 </body>
 </html>

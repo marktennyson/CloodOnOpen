@@ -20,20 +20,22 @@ class SubRegion(models.Model):
 
 class CountryInfo(models.Model):
     name = models.CharField(max_length=600)
-    capital = models.CharField(max_length=600)
+    capital = models.CharField(max_length=600, blank=True)
     region = models.ForeignKey(Region, on_delete=models.CASCADE)
     subRegion = models.ForeignKey(SubRegion, on_delete=models.CASCADE)
     population = models.IntegerField()
     currency = models.CharField(max_length=600)
     languages = models.CharField(max_length=600)
     code = models.CharField(max_length=3, unique=True)
-    neighbours = models.CharField(max_length=600)
+    neighbours = models.CharField(max_length=600, blank=True)
     
 
     def __str__(self):
         return self.name
 
     def toDict(self):
+        try: neighbours = self.neighbours.split("_")
+        except: neighbours = ""
         return {
             'id' : self.pk,
             'name': self.name,
@@ -44,5 +46,5 @@ class CountryInfo(models.Model):
             'currency' : self.currency,
             'languages' : self.languages,
             'code' : self.code,
-            'neighbours' : self.neighbours.split("_")
+            'neighbours' : neighbours
         }

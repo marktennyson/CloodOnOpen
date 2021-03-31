@@ -1,3 +1,114 @@
-export default function func(){
-    document.getElementById("filterBy").oninput = function(e){}
+const numberWithCommas = (x) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+const sorter = (array, sortBy) => {
+    function GetSortOrder(prop) {    
+        return function(a, b) {    
+            if (a[prop] > b[prop]) {    
+                return 1;    
+            } else if (a[prop] < b[prop]) {    
+                return -1;    
+            }    
+            return 0;    
+        }    
+    }array.sort(GetSortOrder(sortBy))
+    return array;
+}
+
+const getHTML = (countryArr) => {
+    var html = new String();
+    countryArr.forEach((country, count) => {
+        html += `<tr>
+            <th>${count+1}</th>
+            <th>${country.name}</th>
+            <th>${country.capital}</th>
+            <th>${country.region}</th>
+            <th>${country.subRegion}</th>
+            <th>${numberWithCommas(country.population)}</th>
+            <th>${country.languages}</th>
+            <th>${country.currency}</th>
+            <th>${country.code}</th>
+        </tr>`;
+    });return html;
+}
+window.onload = () => {
+    fetch("/all-data").then(res=>res.json()).then(countries => {
+        document.getElementById("allTableData").value = JSON.stringify(countries);
+    })
+}
+document.getElementById("filterBy").oninput = function(e){
+    if ( e.target.value === "region"){
+        var html = new String();
+        fetch("/all-regions").then(res=>res.json()).then(regions => {
+            regions.forEach(region => {
+                html += `<option value="${region.name}">${region.name}</option>`
+            })
+            document.getElementById("filterValue").innerHTML = html;
+        })
+    }else if ( e.target.value === "subRegion"){
+        var html = new String();
+        fetch("/all-sub-regions").then(res=>res.json()).then(subRegions => {
+            subRegions.forEach(subRegion => {
+                html += `<option value="${subRegion.name}">${subRegion.name}</option>`
+            })
+            document.getElementById("filterValue").innerHTML = html;
+        })
+    }else if ( e.target.value === "population"){
+        var html = `<option value="bel1m">Below 1 Million</option>
+                    <option value="1to10m">1 - 10 Million</option>
+                    <option value="10to30m">10 - 30 Million</option>
+                    <option value="30to100m">30 - 100 Million</option>
+                    <option value="100to300m">100 - 300 Million</option>
+                    <option value="300to500m">300 - 500 Million</option>
+                    <option value="500to700m">500 - 700 Million</option>
+                    <option value="700to1b">700 - 1 Billion</option>
+                    <option value="gth1b">Greater Than 1 Billion</option>`;
+        document.getElementById("filterValue").innerHTML = html;
+    }else if ( e.target.value === "neighbours"){
+        var html = new String();
+        fetch("/all-data").then(res=>res.json()).then(allCountries => {
+            allCountries.forEach(country => {
+                html += `<option value="${country.name}">${country.name}</option>`
+            })
+            document.getElementById("filterValue").innerHTML = html;
+        })
+    }
+}
+
+document.getElementById("filterValue").oninput = function(e) {
+    var filterBy = document.getElementById("filterBy").value;
+    var allCountry = {};
+    if (filterBy === 'region'){
+        fetch(`/country-per?region=${e.target.value}`).then(res=>res.json()).then(countries => {
+            document.getElementById("allTableData").value = JSON.stringify(countries); 
+            document.getElementById("tableContent").innerHTML = getHTML(countries);
+        })
+    }else if (filterBy === 'subRegion'){
+        fetch(`/country-per?subregion=${e.target.value}`).then(res=>res.json()).then(countries => {
+            document.getElementById("allTableData").value = JSON.stringify(countries);
+            document.getElementById("tableContent").innerHTML = getHTML(countries);
+        })
+    }else if (filterBy === 'neighbours'){
+        fetch(`/country-per?neighbours=${e.target.value}`).then(res=>res.json()).then(countries => {
+            document.getElementById("allTableData").value = JSON.stringify(countries);
+            document.getElementById("tableContent").innerHTML = getHTML(countries);
+        })
+    }else if (filterBy === 'population'){
+        fetch(`/country-per?population=${e.target.value}`).then(res=>res.json()).then(countries => {
+            document.getElementById("allTableData").value = JSON.stringify(countries);
+            document.getElementById("tableContent").innerHTML = getHTML(countries);
+        })
+    }
+}
+document.getElementById("sortBy").oninput = function(e){
+    const sortBy = e.target.value;
+    var sortedTableData = new Array();
+    if (sortBy === "population"){
+        sortedTableData = sorter(JSON.parse(document.getElementById("allTableData").value), 'population');
+    }else if (sortBy === "name") {
+        sortedTableData = sorter(JSON.parse(document.getElementById("allTableData").value), 'name')
+    }
+    var html = getHTML(sortedTableData);
+    document.getElementById("tableContent").innerHTML = html;
 }

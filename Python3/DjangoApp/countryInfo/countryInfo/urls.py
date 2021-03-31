@@ -24,5 +24,5 @@ urlpatterns = [
     path('put/',putData),
     path('all-regions/', allRegions),
     path('all-sub-regions/', allSubRegions),
-    path('country-per/', countryPer)
+    path('country-per/', countryPer),
 ]
