@@ -1,11 +1,15 @@
 <html>
 <head>
     {% load static %}
+    <title>Rest Country Information</title>
     <link rel='shortcut icon' type='image/x-icon' href="https://s3.amazonaws.com/demo.cloodon.com/favicon.ico" />
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 </head>
 <body>
-    <h1 id="heading">All Country Info</h1><br>
+    <div>
+        <button type="submit" id="resetAll" onclick="resetAll()">Reset</button>
+        <h1 id="heading">All Country Info</h1>
+    </div><br>
     <label for="filter_by">Filter By: </label>
     <select name="filter_by" id="filterBy">
         <option value="null">--select a option--</option>

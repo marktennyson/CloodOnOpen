@@ -28,6 +28,7 @@ class CountryInfo(models.Model):
     languages = models.CharField(max_length=600)
     code = models.CharField(max_length=3, unique=True)
     neighbours = models.CharField(max_length=600, blank=True)
+    flag = models.CharField(max_length=600, blank=True)
     
 
     def __str__(self):
@@ -46,5 +47,6 @@ class CountryInfo(models.Model):
             'currency' : self.currency,
             'languages' : self.languages,
             'code' : self.code,
-            'neighbours' : neighbours
+            'neighbours' : neighbours,
+            'flag' : self.flag,
         }

@@ -3,11 +3,22 @@ from django.http import HttpResponse
 from requests import get
 from json import dumps
 from .models import *
+from .utils import Utils
+
+utils:Utils = Utils()
 
 def indexView(request):
     countries = CountryInfo.objects.all()
     context = {"countries":countries}
     return render(request, 'index.html', context)
+
+def index2View(request):
+    countries = CountryInfo.objects.all()
+    context = {"countries":countries}
+    return render(request, 'index2.html', context)
+
+def apiIndexView(request):
+    return utils.jsonify(message="Hello World!")
 
 def putData(request):
     countries = get("https://restcountries.eu/rest/v2/all").json()
@@ -30,28 +41,28 @@ def putData(request):
         except: region = Region.objects.get(name="no-region")
         try: subRegion = SubRegion.objects.get(name=country['subregion'])
         except: subRegion = SubRegion.objects.get(name="no-sub-region")
-        ci = CountryInfo(name=country['name'],capital=country['capital'], region=region,
+        ci = CountryInfo(name=country['name'],capital=country['capital'], region=region,flag=country['flag'],
                 subRegion=subRegion, population=country['population'], currency=country['currencies'][0]['code'] or "null",
                 languages=country['languages'][0]['name'] or "null", code=country['alpha3Code'], neighbours="_".join(country['borders']))
         ci.save()
-    return HttpResponse('Done')
+    return utils.jsonify(message="Data inserted successfully.")
 
 def allData(request):
     countries = CountryInfo.objects.all()
     countryL = list()
     for country in countries:
         countryL.append(country.toDict())
-    return HttpResponse(dumps(countryL))
+    return utils.jsonify(_=countryL)
 
 def allRegions(request):
     regions = Region.objects.all()
     regionL = [region.toDict() for region in regions]
-    return HttpResponse(dumps(regionL))
+    return utils.jsonify(_=regionL)
 
 def allSubRegions(request):
     subRegions = SubRegion.objects.all()
     subRegionL = [subRegion.toDict() for subRegion in subRegions]
-    return HttpResponse(dumps(subRegionL))
+    return utils.jsonify(_=subRegionL)
 
 def countryPer(request):
     region = request.GET.get('region', '')
@@ -87,4 +98,4 @@ def countryPer(request):
         elif population == '700to1b': allCountry = CountryInfo.objects.filter(population__gte=700*M, population__lte=B)
         elif population == 'gth1b': allCountry = CountryInfo.objects.filter(population__gte=B)
     allCountryL = [country.toDict() for country in allCountry]
-    return HttpResponse(dumps(allCountryL))     
+    return utils.jsonify(_=allCountryL)

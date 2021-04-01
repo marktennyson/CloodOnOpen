@@ -32,6 +32,20 @@ const getHTML = (countryArr) => {
         </tr>`;
     });return html;
 }
+const resetDiffElem = (elemId) => {
+    var options = document.querySelectorAll(`#${elemId} option`);
+    for (var i = 0, l = options.length; i < l; i++) {
+        options[i].selected = options[i].defaultSelected;
+    }
+}
+const resetAll = () => {
+    fetch("/all-data").then(res=>res.json()).then(countries => {
+        document.getElementById("tableContent").innerHTML = getHTML(countries);
+        resetDiffElem("filterBy")
+        resetDiffElem("sortBy")
+        resetDiffElem("FilterValue")
+    })
+}
 window.onload = () => {
     fetch("/all-data").then(res=>res.json()).then(countries => {
         document.getElementById("allTableData").value = JSON.stringify(countries);
@@ -39,7 +53,7 @@ window.onload = () => {
 }
 document.getElementById("filterBy").oninput = function(e){
     if ( e.target.value === "region"){
-        var html = new String();
+        var html = `<option value="null">--select a value--</option>`
         fetch("/all-regions").then(res=>res.json()).then(regions => {
             regions.forEach(region => {
                 html += `<option value="${region.name}">${region.name}</option>`
@@ -47,7 +61,7 @@ document.getElementById("filterBy").oninput = function(e){
             document.getElementById("filterValue").innerHTML = html;
         })
     }else if ( e.target.value === "subRegion"){
-        var html = new String();
+        var html = `<option value="null">--select a value--</option>`
         fetch("/all-sub-regions").then(res=>res.json()).then(subRegions => {
             subRegions.forEach(subRegion => {
                 html += `<option value="${subRegion.name}">${subRegion.name}</option>`
@@ -55,7 +69,8 @@ document.getElementById("filterBy").oninput = function(e){
             document.getElementById("filterValue").innerHTML = html;
         })
     }else if ( e.target.value === "population"){
-        var html = `<option value="bel1m">Below 1 Million</option>
+        var html = `<option value="null">--select a value--</option>
+                    <option value="bel1m">Below 1 Million</option>
                     <option value="1to10m">1 - 10 Million</option>
                     <option value="10to30m">10 - 30 Million</option>
                     <option value="30to100m">30 - 100 Million</option>
@@ -66,19 +81,18 @@ document.getElementById("filterBy").oninput = function(e){
                     <option value="gth1b">Greater Than 1 Billion</option>`;
         document.getElementById("filterValue").innerHTML = html;
     }else if ( e.target.value === "neighbours"){
-        var html = new String();
+        var html = `<option value="null">--select a value--</option>`
         fetch("/all-data").then(res=>res.json()).then(allCountries => {
             allCountries.forEach(country => {
                 html += `<option value="${country.name}">${country.name}</option>`
             })
             document.getElementById("filterValue").innerHTML = html;
         })
-    }
+    }resetDiffElem('sortBy')
 }
 
 document.getElementById("filterValue").oninput = function(e) {
     var filterBy = document.getElementById("filterBy").value;
-    var allCountry = {};
     if (filterBy === 'region'){
         fetch(`/country-per?region=${e.target.value}`).then(res=>res.json()).then(countries => {
             document.getElementById("allTableData").value = JSON.stringify(countries); 
@@ -99,14 +113,13 @@ document.getElementById("filterValue").oninput = function(e) {
             document.getElementById("allTableData").value = JSON.stringify(countries);
             document.getElementById("tableContent").innerHTML = getHTML(countries);
         })
-    }
+    }resetDiffElem('sortBy')
 }
 document.getElementById("sortBy").oninput = function(e){
-    const sortBy = e.target.value;
     var sortedTableData = new Array();
-    if (sortBy === "population"){
+    if (e.target.value === "population"){
         sortedTableData = sorter(JSON.parse(document.getElementById("allTableData").value), 'population');
-    }else if (sortBy === "name") {
+    }else if (e.target.value === "name") {
         sortedTableData = sorter(JSON.parse(document.getElementById("allTableData").value), 'name')
     }
     var html = getHTML(sortedTableData);
