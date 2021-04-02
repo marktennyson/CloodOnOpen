@@ -21,7 +21,7 @@ const getHTML = (countryArr) => {
     countryArr.forEach((country, count) => {
         html += `<tr>
             <th>${count+1}</th>
-            <th>${country.name}</th>
+            <th><a id="NameDescAnch" onclick="openModal(${country.id})">${country.name}</a></th>
             <th>${country.capital}</th>
             <th>${country.region}</th>
             <th>${country.subRegion}</th>
@@ -46,6 +46,20 @@ const resetAll = () => {
         resetDiffElem("FilterValue")
     })
 }
+const openModal = (id) => {
+    var html = new String();
+    fetch(`/all-data?id=${id}`).then(res=>res.json()).then(country=>{
+        document.getElementById("exampleModalLabel").innerHTML = country.name;
+        html += `<tr>
+                    <th><img src="${country.flag}" height="25px", width="25px"></img></th>
+                    <th>${numberWithCommas(country.area)}</th>
+                    <th>${country.nativeName}</th>
+                </tr>`
+        document.getElementById("modalTableBody").innerHTML = html;
+        $("#descModal").modal();
+    })
+}
+
 window.onload = () => {
     fetch("/all-data").then(res=>res.json()).then(countries => {
         document.getElementById("allTableData").value = JSON.stringify(countries);
@@ -121,6 +135,8 @@ document.getElementById("sortBy").oninput = function(e){
         sortedTableData = sorter(JSON.parse(document.getElementById("allTableData").value), 'population');
     }else if (e.target.value === "name") {
         sortedTableData = sorter(JSON.parse(document.getElementById("allTableData").value), 'name')
+    }else if (e.target.value === "area") {
+        sortedTableData = sorter(JSON.parse(document.getElementById("allTableData").value), 'area')
     }
     var html = getHTML(sortedTableData);
     document.getElementById("tableContent").innerHTML = html;

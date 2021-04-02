@@ -1,0 +1,30 @@
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Capital</th>
+            <th>Region</th>
+            <th>Sub region</th>
+            <th>Population</th>
+            <th>Language</th>
+            <th>Currency</th>
+            <th>Code</th>
+        </tr>
+    </thead>
+    <tbody id="tableContent">
+        {% for country in countries %}
+            <tr>
+                <th>{{forloop.counter}}</th>
+                <th><a id="NameDescAnch" onclick="openModal({{country.id}})">{{country.name}}</a></th>
+                <th>{{country.capital}}</th>
+                <th>{{country.region}}</th>
+                <th>{{country.subRegion}}</th>
+                <th>{{country.population}}</th>
+                <th>{{country.languages}}</th>
+                <th>{{country.currency}}</th>
+                <th>{{country.code}}</th>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

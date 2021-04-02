@@ -55,3 +55,13 @@ table {
     height: 40px;
     width: 200px;
 }
+#NameDescAnch{
+    color: black;
+    cursor: pointer;
+    text-decoration: none;
+}
+#NameDescAnch:hover{
+    color: blue;
+    cursor: pointer;
+    text-decoration: none;
+}

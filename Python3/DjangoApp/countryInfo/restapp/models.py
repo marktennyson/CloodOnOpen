@@ -29,6 +29,8 @@ class CountryInfo(models.Model):
     code = models.CharField(max_length=3, unique=True)
     neighbours = models.CharField(max_length=600, blank=True)
     flag = models.CharField(max_length=600, blank=True)
+    area = models.IntegerField(null=True, blank=True)
+    nativeName = models.CharField(max_length=600, blank=True)
     
 
     def __str__(self):
@@ -49,4 +51,6 @@ class CountryInfo(models.Model):
             'code' : self.code,
             'neighbours' : neighbours,
             'flag' : self.flag,
+            'area' : self.area,
+            'nativeName' : self.nativeName,
         }

@@ -41,13 +41,17 @@ def putData(request):
         except: region = Region.objects.get(name="no-region")
         try: subRegion = SubRegion.objects.get(name=country['subregion'])
         except: subRegion = SubRegion.objects.get(name="no-sub-region")
-        ci = CountryInfo(name=country['name'],capital=country['capital'], region=region,flag=country['flag'],
-                subRegion=subRegion, population=country['population'], currency=country['currencies'][0]['code'] or "null",
+        ci = CountryInfo(name=country['name'],capital=country['capital'], region=region,flag=country['flag'],area=country['area'],
+                subRegion=subRegion, population=country['population'], currency=country['currencies'][0]['code'] or "null",nativeName=country['nativeName'],
                 languages=country['languages'][0]['name'] or "null", code=country['alpha3Code'], neighbours="_".join(country['borders']))
         ci.save()
     return utils.jsonify(message="Data inserted successfully.")
 
 def allData(request):
+    singleId = request.GET.get('id','')
+    if singleId:
+        try: return utils.jsonify(_=CountryInfo.objects.get(pk=singleId).toDict())
+        except: return utils.jsonify(message="Country not found.")
     countries = CountryInfo.objects.all()
     countryL = list()
     for country in countries:

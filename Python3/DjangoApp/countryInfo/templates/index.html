@@ -1,62 +1,29 @@
-<html>
-<head>
-    {% load static %}
-    <title>Rest Country Information</title>
-    <link rel='shortcut icon' type='image/x-icon' href="https://s3.amazonaws.com/demo.cloodon.com/favicon.ico" />
-    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
-</head>
-<body>
+{% extends 'layout.html' %}
+{% block content %}
     <div>
         <button type="submit" id="resetAll" onclick="resetAll()">Reset</button>
         <h1 id="heading">All Country Info</h1>
     </div><br>
     <label for="filter_by">Filter By: </label>
     <select name="filter_by" id="filterBy">
-        <option value="null">--select a option--</option>
+        <option value="null">--select a value--</option>
         <option value="region">Region</option>
         <option value="subRegion">Sub Region</option>
         <option value="population">Population</option>
         <option value="neighbours">Neighbors</option>
     </select>
     <label for="filter_value">Filter Value: </label>
-    <select id="filterValue" name="filter_value"></select>
+    <select id="filterValue" name="filter_value">
+        <option value="null">--select a value--</option>
+    </select>
     <label for="sort_by">Sort By: </label>
     <select id="sortBy" name="sort_by">
         <option value="null">--select a value--</option>
         <option value="name">Name</option>
+        <option value="area">Area</option>
         <option value="population">Population</option>
     </select>
     <input type="hidden" id="allTableData" value=""></input>
-    <table >
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Capital</th>
-                <th>Region</th>
-                <th>Sub region</th>
-                <th>Population</th>
-                <th>Language</th>
-                <th>Currency</th>
-                <th>Code</th>
-            </tr>
-        </thead>
-        <tbody id="tableContent">
-            {% for country in countries %}
-                <tr>
-                    <th>{{forloop.counter}}</th>
-                    <th>{{country.name}}</th>
-                    <th>{{country.capital}}</th>
-                    <th>{{country.region}}</th>
-                    <th>{{country.subRegion}}</th>
-                    <th>{{country.population}}</th>
-                    <th>{{country.languages}}</th>
-                    <th>{{country.currency}}</th>
-                    <th>{{country.code}}</th>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <script type="text/javascript" src="{% static 'javascript/main.js' %}"></script>
-</body>
-</html>
+    {% include 'table.html' %}
+    {% include 'modal.html' %}
+{% endblock content %}
