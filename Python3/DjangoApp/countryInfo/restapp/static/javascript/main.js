@@ -52,7 +52,7 @@ const openModal = (id) => {
         document.getElementById("exampleModalLabel").innerHTML = country.name;
         html += `<tr>
                     <th><img src="${country.flag}" height="25px", width="25px"></img></th>
-                    <th>${numberWithCommas(country.area)}</th>
+                    <th>${numberWithCommas(country.area)} KM<sup>2</sup></th>
                     <th>${country.nativeName}</th>
                 </tr>`
         document.getElementById("modalTableBody").innerHTML = html;
