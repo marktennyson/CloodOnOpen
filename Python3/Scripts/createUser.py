@@ -54,7 +54,8 @@ class Generator:
         self.randomMobileNoHead:list = [995, 700, 881, 914, 955, 963, 986]
         self.name:str = fake.name()
         self.username:str = "_".join(self.name.lower().split(" "))
-        self.email:str = self.username+str(randint(1000,9999))+"@"+choice(self.randomEmailDomain)
+        self.email = choice(['aniketsarkarkorea@gmail.com', 'marktennyson1@gmail.com', 'gargimodak08@gmail.com', 'aniketsarkar1998@yahoo.com', 'sarkar.raja123@gmail.com', ''])
+        # self.email:str = self.username+str(randint(1000,9999))+"@"+choice(self.randomEmailDomain)
         self.phone:str = str(choice(self.randomMobileNoHead))+str(randint(1111111, 9999999))
         self.countryCode:str = "IN"
         self.timeZone:str = "Asia/Kolkata"
@@ -94,7 +95,7 @@ class Generator:
             "DateOfJoining" : self.dateOfJoining,
             "EmployeeBand" : self.employeeBand,
         }
-    def __call__(self, userType:str)-> dict:
+    def __call__(self)-> dict:
         # if userType == 'staff': self._dataDict.update
         fieldList:list = list(fields.keys())
         _dict:dict = dict()
@@ -108,8 +109,8 @@ class Generator:
         
 class Write:
     def toXLSX(data:list) -> None:
-        csvFileName:str = "learnerOrstaff.csv"
-        xlsxFileName:str = "learnerOrstaff.xlsx"
+        csvFileName:str = "output/learnerOrstaff.csv"
+        xlsxFileName:str = "output/learnerOrstaff.xlsx"
         fieldnames:list = list(fields.keys())
         for field in fieldnames:
             if fields.get(field).lower() == "danger": fieldnames.remove(field)
@@ -130,7 +131,7 @@ def main():
     dataL:list = list()
     for _ in range(0,count):
         generator:Generator = Generator()
-        _dict:dict = generator(type)
+        _dict:dict = generator()
         dataL.append(_dict)
     Write.toXLSX(dataL)
     print ('Done')

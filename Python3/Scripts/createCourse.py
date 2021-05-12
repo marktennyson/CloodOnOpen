@@ -34,7 +34,7 @@ class Utils:
                 inp = input(msg).strip() 
                 if required and not inp: continue
                 else: break
-            return inp.strip()  
+            return inp 
 
 class Generator:
     def __init__(self):

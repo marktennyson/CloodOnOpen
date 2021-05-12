@@ -26,7 +26,7 @@ class Generate:
 
 class Write:
     def toXLSX(DataL:list):
-        workbook = Workbook('cat01.xlsx')
+        workbook = Workbook('output/cat01.xlsx')
         worksheet = workbook.add_worksheet()
         row = 0
         col = 0

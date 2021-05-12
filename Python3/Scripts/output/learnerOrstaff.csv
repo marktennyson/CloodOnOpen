@@ -1,0 +1,6 @@
+Name,UserName,Email,Phone,Country Code,Timezone,Affiliate,LearnerGroups,DateOfBirth,Address1,Address2,City,State,Pincode,Designation,DateOfJoining,EmployeeBand
+Misha Kapoor,misha_kapoor,gargimodak08@gmail.com,7002075913,IN,Asia/Kolkata,test,finance,"""1991-09-23""","H.No. 842 Dora, Parbhani-528731","H.No. 099 Chokshi Zila, Berhampore 443165",Parbhani,Jharkhand,528731,Pilot,"""2021-05-10""",empb-48
+Anahi Srinivasan,anahi_srinivasan,sarkar.raja123@gmail.com,9868478517,IN,Asia/Kolkata,test,support,"""1990-03-03""",48/981 Chandra Ganj Howrah-515058,"12/00, Deshpande Circle, Silchar 785365",Howrah,Odisha,515058,Thief,"""2021-10-14""",empb-11
+Mishti Srinivas,mishti_srinivas,aniketsarkar1998@yahoo.com,9955072886,IN,Asia/Kolkata,test,support,"""1997-03-11""","H.No. 106 Devan Marg, Bathinda-919214","23, Venkataraman Ganj, Lucknow 367222",Bathinda,Jharkhand,919214,Doctor,"""2021-01-07""",empb-55
+Vivaan Bawa,vivaan_bawa,aniketsarkarkorea@gmail.com,9557018144,IN,Asia/Kolkata,Asia,finance,"""1993-03-13""",598 Walla Ganj Amravati-105661,"377, Sharaf Zila, Haldia 983885",Amravati,Maharashtra,105661,Engineer,"""2020-08-13""",empb-28
+Raghav Manne,raghav_manne,sarkar.raja123@gmail.com,9558133840,IN,Asia/Kolkata,India,operations,"""1996-04-28""","H.No. 119, Gera Solapur 704186","86, Shukla Nagar Ajmer-875130",Solapur,Odisha,704186,Robber,"""2020-07-14""",empb-83
